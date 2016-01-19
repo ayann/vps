@@ -31,12 +31,12 @@ echo "================== Enable the Ubuntu firewall so that unconfigured service
 echo ""
 
 echo "================== Create User Rails ==============="
-  adduser deploy --disabled-password
+  adduser rails --disabled-password
   chown rails /srv/
 echo ""
 
 echo "================== Grant User Rails sudo ==============="
-  adduser deploy sudo
+  adduser rails sudo
   echo -e "\nrails ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 echo ""
 
