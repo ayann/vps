@@ -10,8 +10,9 @@
 ### END INIT INFO
 
 # Name of the rails app to start
-APP_USER="rails"
 APP_NAME="rails-demo"
+APP_USER="rails"
+APP_SCRIPT_NAME="unicorn"
 
 # Path to the Mina deploy directory
 MINA_DEPLOY_DIR=/home/$APP_USER/$APP_NAME
@@ -31,7 +32,7 @@ UNICORN_USER=$APP_USER
 # determine the rvm wrapper script for unicorn that sets up the ruby environment
 # for the app according to its .ruby-version
 # See: https://github.com/wayneeseguin/rvm/issues/3365
-RVM=/home/$APP_USER/.rvm/scripts/rvm
+RVM=/home/$APP_USER/.rvm/bin/rvm
 DAEMON="$RVM in $APP_PATH do bundle exec unicorn"
 
 DAEMON_ARGS="-D -c $UNICORN_CONF -E production"
@@ -41,8 +42,8 @@ DAEMON_ARGS="-D -c $UNICORN_CONF -E production"
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC=$APP_NAME
-NAME=unicorn
-SCRIPTNAME=/etc/init.d/unicorn
+NAME=$APP_SCRIPT_NAME
+SCRIPTNAME=/etc/init.d/$APP_SCRIPT_NAME
 
 # -----------------------------------------------------------------
 # This is copied from /etc/init.d/skeleton

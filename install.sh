@@ -41,8 +41,7 @@ echo ""
 
 echo "================== Install default gems =============="
   rvm @global do gem install bundler
-  rvm @global do gem install unicorn
-  gem install rails --no-ri --no-rdoc
+  # gem install rails --no-ri --no-rdoc
 echo ""
 
 echo "================== Define application ================"
@@ -73,16 +72,16 @@ echo "================== Install postgresql ================"
 echo ""
 
 echo "================== Download unicorn conf ============"
-  curl https://raw.githubusercontent.com/ayann/vps/master/unicorn.conf.rb > ~/unicorn.conf.rb
+  wget https://raw.githubusercontent.com/ayann/vps/master/unicorn.conf.rb
   mkdir -p $app_name/shared/config
   mv unicorn.conf.rb $app_name/shared/config/unicorn.conf.rb
 echo ""
 
 echo "================== Download unicorn init script ============"
-  curl https://raw.githubusercontent.com/ayann/vps/master/unicorn.sh > ~/unicorn.sh
+  wget https://raw.githubusercontent.com/ayann/vps/master/unicorn.sh
   sed -i.bak -e "s/rails-demo/$app_name/g" unicorn.sh
+  chmod +x unicorn.sh
   sudo mv ~/unicorn.sh /etc/init.d/unicorn
-  sudo chmod 755 /etc/init.d/unicorn
   sudo update-rc.d unicorn defaults
 echo ""
 
@@ -93,7 +92,7 @@ echo ""
 echo "================== Download & set nginx host ============="
   sudo rm /etc/nginx/sites-enabled/*
 
-  curl https://raw.githubusercontent.com/ayann/vps/master/nginx.host > ~/nginx.host
+  wget https://raw.githubusercontent.com/ayann/vps/master/nginx.host
   sed -i.bak -e "s/rails-demo/$app_name/g" nginx.host
   sudo mv ~/nginx.host /etc/nginx/sites-available/$app_name
   sudo ln -s /etc/nginx/sites-available/$app_name /etc/nginx/sites-enabled/$app_name
