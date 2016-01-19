@@ -87,9 +87,9 @@ echo ""
 echo "================== Download & set nginx host ============="
   sudo rm /etc/nginx/sites-enabled/default
 
-  curl https://raw.githubusercontent.com/ayann/vps/master/nginx.host > ~/$app_name
-  sed -i.bak -e "s/rails-demo/$app_name/g" $app_name
-  sudo mv ~/$app_name /etc/nginx/sites-available/$app_name
+  curl https://raw.githubusercontent.com/ayann/vps/master/nginx.host > ~/nginx.host
+  sed -i.bak -e "s/rails-demo/$app_name/g" nginx.host
+  sudo mv ~/nginx.host /etc/nginx/sites-available/$app_name
   sudo ln -s /etc/nginx/sites-available/$app_name /etc/nginx/sites-enabled/$app_name
 echo ""
 
