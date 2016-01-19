@@ -13,8 +13,8 @@ echo "================== Install curl git nodejs ==========="
 echo ""
 
 echo "================== Disable SSH password authentication ==============="
-  echo -e "PasswordAuthentication no" >> /etc/ssh/sshd_config
-  sed -i -e "s/UsePAM yes/UsePAM no/g" /etc/ssh/sshd_config
+  sed -i.bak -e "s/UsePAM yes/UsePAM no/g" /etc/ssh/sshd_config
+  sed -i.bak -e "s/#PasswordAuthentication yes/PasswordAuthentication no/g" /etc/ssh/sshd_config
 echo ""
 
 echo "================== Generate missing SSH host keys ==============="
