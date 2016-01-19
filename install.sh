@@ -1,24 +1,4 @@
 #!/bin/bash
-echo "================== Reconfigure time zone ============"
- sudo dpkg-reconfigure tzdata
-echo ""
-
-echo "================== Update and upgrade ==============="
- sudo apt-get update && sudo apt-get upgrade -y
-echo ""
-
-echo "================== Auto remove ======================"
- sudo apt-get autoremove
-echo ""
-
-echo "================== Install nginx ====================="
- sudo apt-get install nginx -y
-echo ""
-
-echo "================== Install curl git nodejs ==========="
- sudo apt-get -y install curl python-software-properties git-core nodejs
-echo ""
-
 echo "================== Install RVM ======================="
  echo "gem: --no-document" >> ~/.gemrc
 
@@ -52,4 +32,77 @@ echo "================== Install Ruby ======================"
      No ) break;;
    esac
  done
+echo ""
+
+echo "================== Install default gems =============="
+  gem install bundler
+  gem install unicorn
+  gem install rails --no-ri --no-rdoc
+echo ""
+
+echo "================== Define application ================"
+  read -p  "Enter your application name : " app_name
+  until [[ ! ${#app_name} = 0 ]]; do
+    echo "Application name are not filled"
+    read -p  "Enter your application name : " app_name
+  done
+  echo ""
+  echo "Your application name is : $app_name"
+echo ""
+
+echo "================== Install postgresql ================"
+  echo "Do you wish to install postgresql?"
+  select yn_psql in "Yes" "No"; do
+    case $yn_psql in
+      Yes )
+      sudo apt-get install -y postgresql libpq-dev
+      sudo -u postgres createuser rails
+      sudo -u postgres createdb $app_name --owner=rails
+      sudo service postgresql restart
+      break
+      ;;
+      No ) break;;
+    esac
+  done
+echo ""
+
+echo "================== Download unicorn conf ============"
+  curl https://raw.githubusercontent.com/ayann/vps/master/unicorn.conf.rb > ~/unicorn.conf.rb
+  mkdir -p $app_name/shared/config
+  mv unicorn.conf.rb $app_name/shared/config/unicorn.conf.rb
+echo ""
+
+echo "================== Download unicorn init script ============"
+  curl https://raw.githubusercontent.com/ayann/vps/master/unicorn.sh > ~/unicorn.sh
+  sed -i.bak -e "s/rails-demo/$app_name/g" unicorn.sh
+  sudo mv ~/unicorn.sh /etc/init.d/unicorn
+  sudo chmod 755 /etc/init.d/unicorn
+  sudo update-rc.d unicorn defaults
+echo ""
+
+echo "================== Instal nginx ============"
+  sudo apt-get install nginx -y
+echo ""
+
+echo "================== Download & set nginx host ============="
+  sudo rm /etc/nginx/sites-enabled/default
+
+  curl https://raw.githubusercontent.com/ayann/vps/master/nginx.host > ~/$app_name
+  sed -i.bak -e "s/rails-demo/$app_name/g" $app_name
+  sudo mv ~/$app_name /etc/nginx/sites-available/$app_name
+  sudo ln -s /etc/nginx/sites-available/$app_name /etc/nginx/sites-enabled/$app_name
+echo ""
+
+echo "================== Reload nginx ============"
+  # Reload nginx. Make sure to use the `reload` action so that nginx can check
+  # your configuration before reloading, thereby saving you from causing downtime.
+  sudo nginx -t && sudo service nginx reload
+echo ""
+
+echo "================== Reload nginx ============"
+  sudo ufw allow 80
+echo ""
+
+echo "================== Reboot VPS ============"
+  sudo reboot
 echo ""
