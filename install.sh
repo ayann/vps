@@ -1,4 +1,9 @@
 #!/bin/bash
+
+echo "================== ssh keygen ======================="
+  ssh-keygen
+echo ""
+
 echo "================== Install RVM ======================="
  echo "gem: --no-document" >> ~/.gemrc
 
@@ -35,8 +40,8 @@ echo "================== Install Ruby ======================"
 echo ""
 
 echo "================== Install default gems =============="
-  gem install bundler
-  gem install unicorn
+  rvm @global do gem install bundler
+  rvm @global do gem install unicorn
   gem install rails --no-ri --no-rdoc
 echo ""
 
@@ -48,6 +53,7 @@ echo "================== Define application ================"
   done
   echo ""
   echo "Your application name is : $app_name"
+  rvm gemset create $app_name
 echo ""
 
 echo "================== Install postgresql ================"
@@ -85,7 +91,7 @@ echo "================== Instal nginx ============"
 echo ""
 
 echo "================== Download & set nginx host ============="
-  sudo rm /etc/nginx/sites-enabled/default
+  sudo rm /etc/nginx/sites-enabled/*
 
   curl https://raw.githubusercontent.com/ayann/vps/master/nginx.host > ~/nginx.host
   sed -i.bak -e "s/rails-demo/$app_name/g" nginx.host
