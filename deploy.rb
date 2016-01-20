@@ -29,7 +29,7 @@ set :shared_paths, ['config/database.yml', 'config/secrets.yml', 'log']
 # `mina deploy` or `mina rake`.
 task :environment do
   ruby_version = File.read('.ruby-version').strip
-  ruby_gemset  = File.read('.ruby_gemset').strip
+  ruby_gemset  = File.read('.ruby-gemset').strip
   raise "Couldn't determine Ruby version: Do you have a file .ruby-version in your project root?" if ruby_version.empty?
   queue %{
     source /home/#{user}/.rvm/scripts/rvm
