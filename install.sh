@@ -52,7 +52,6 @@ echo ""
 
 echo "================== Install default gems =============="
   rvm @global do gem install bundler
-  rvm @$app_name do gem install unicorn
   # gem install rails --no-ri --no-rdoc
 echo ""
 
