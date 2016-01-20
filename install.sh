@@ -39,11 +39,6 @@ echo "================== Install Ruby ======================"
  done
 echo ""
 
-echo "================== Install default gems =============="
-  rvm @global do gem install bundler
-  # gem install rails --no-ri --no-rdoc
-echo ""
-
 echo "================== Define application ================"
   read -p  "Enter your application name : " app_name
   until [[ ! ${#app_name} = 0 ]]; do
@@ -53,6 +48,12 @@ echo "================== Define application ================"
   echo ""
   echo "Your application name is : $app_name"
   rvm gemset create $app_name
+echo ""
+
+echo "================== Install default gems =============="
+  rvm @global do gem install bundler
+  rvm @$app_name do gem install unicorn
+  # gem install rails --no-ri --no-rdoc
 echo ""
 
 echo "================== Install postgresql ================"
