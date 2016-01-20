@@ -4,6 +4,8 @@ echo "================== ssh keygen ======================="
   ssh-keygen
 echo ""
 
+sudo apt-get install libgmp3-dev -y
+
 echo "================== Install RVM ======================="
  echo "gem: --no-document" >> ~/.gemrc
 
